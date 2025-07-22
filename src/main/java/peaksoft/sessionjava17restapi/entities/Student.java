@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import peaksoft.sessionjava17restapi.enums.Gender;
+import peaksoft.sessionjava17restapi.enums.StudyFormat;
 
 import java.time.LocalDate;
 
@@ -18,11 +19,11 @@ public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    String firstName;
-    String lastName;
-    LocalDate dateOfBirth;
     @Enumerated(EnumType.STRING)
-    Gender gender;
-    @ManyToOne(cascade = {CascadeType.MERGE,CascadeType.DETACH,CascadeType.REFRESH})
+    StudyFormat studyFormat;
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     Group group;
+    @OneToOne
+    User user;
+
 }

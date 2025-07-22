@@ -16,6 +16,6 @@ public interface StudentService {
     Student getById(Long id);
     String update (Long id, UpdateStudentRequest updateStudentRequest);
     String delete (Long id);
-    List<GetStudentWithGroupResponse> getStudentWithGroup(Long id);
+//    List<GetStudentWithGroupResponse> getStudentWithGroup(Long id);
 
 }

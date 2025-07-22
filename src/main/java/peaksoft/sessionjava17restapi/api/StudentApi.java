@@ -1,6 +1,8 @@
 package peaksoft.sessionjava17restapi.api;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import peaksoft.sessionjava17restapi.dto.SimpleResponse;
 import peaksoft.sessionjava17restapi.dto.studentDto.request.StudentRequest;
@@ -17,6 +19,7 @@ public class StudentApi {
     private final StudentService studentService;
 
     @PostMapping
+    @Secured({"ADMIN"})
     public SimpleResponse save(@RequestParam Long id , @RequestBody StudentRequest studentRequest){
        return studentService.saveWithGroup(id,studentRequest);
     }
@@ -37,9 +40,9 @@ public class StudentApi {
     }
 
 
-    @GetMapping("/getAllStudentWithGroup/{id}")
-    public List<GetStudentWithGroupResponse> getStudentWithGroup(@PathVariable Long id){
-        return studentService.getStudentWithGroup(id);
-    }
+//    @GetMapping("/getAllStudentWithGroup/{id}")
+//    public List<GetStudentWithGroupResponse> getStudentWithGroup(@PathVariable Long id){
+//        return studentService.getStudentWithGroup(id);
+//    }
 
 }

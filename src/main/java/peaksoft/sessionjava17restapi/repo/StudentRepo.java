@@ -12,8 +12,8 @@ import java.util.List;
 @Repository
 public interface StudentRepo extends JpaRepository<Student,Long> {
 
-    @Query("select new peaksoft.sessionjava17restapi.dto.studentDto.response.GetStudentWithGroupResponse(g.groupName, s.firstName) from Student  s " +
-            "join Group  g on s.group.id= :id")
-    List<GetStudentWithGroupResponse> getStudentWithGroup(@Param("id") Long id);
+////    @Query("select new peaksoft.sessionjava17restapi.dto.studentDto.response.GetStudentWithGroupResponse(g.groupName, u.firstName) from User  u " +
+////            "join User  u on s.group.id= :id")
+//    List<GetStudentWithGroupResponse> getStudentWithGroup(@Param("id") Long id);
 
 }
