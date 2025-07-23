@@ -2,8 +2,10 @@ package peaksoft.sessionjava17restapi.service.serviceImpl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import peaksoft.sessionjava17restapi.config.jwtConfig.JwtService;
 import peaksoft.sessionjava17restapi.dto.SimpleResponse;
 import peaksoft.sessionjava17restapi.dto.studentDto.request.StudentRequest;
 import peaksoft.sessionjava17restapi.dto.studentDto.request.UpdateStudentRequest;
@@ -26,6 +28,7 @@ public class StudentServiceImpl implements StudentService {
     private final GroupRepo groupRepo;
     private final UserRepo userRepo;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
 
     @Override
@@ -66,11 +69,16 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public String update(Long id, UpdateStudentRequest updateStudentRequest) {
-//        Student oldStudent = getById(id);
-//        oldStudent.setFirstName(updateStudentRequest.getFirstName());
-//        oldStudent.setLastName(updateStudentRequest.getLastName());
-//        studentRepo.save(oldStudent);
-        return "Success";
+        User currentUser = jwtService.getAuthentication();
+        User updateUser = userRepo.findById(id).orElseThrow(() ->
+                new RuntimeException(String.format("User with  id %s not found!", id)));
+        if (currentUser.getEmail().equals(updateUser.getEmail())) {
+            updateUser.setFirstName(updateStudentRequest.getFirstName());
+            updateUser.setLastName(updateStudentRequest.getFirstName());
+            userRepo.save(updateUser);
+            return "Success";
+        }
+        return "Failed!";
     }
 
     @Override

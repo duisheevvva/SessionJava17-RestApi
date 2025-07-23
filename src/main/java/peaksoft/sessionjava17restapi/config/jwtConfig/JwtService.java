@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import peaksoft.sessionjava17restapi.entities.User;
 import peaksoft.sessionjava17restapi.repo.UserRepo;
@@ -17,7 +18,7 @@ import java.time.ZonedDateTime;
 @RequiredArgsConstructor
 public class JwtService {
     @Value("${security.secret.key}")
-    private String secretKey; // java16
+    private String secretKey; // java17
     private final UserRepo userRepo;
 
 
@@ -44,6 +45,12 @@ public class JwtService {
         );
     }
 
+    public User getAuthentication(){
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        return userRepo.findUserByEmail(email).orElseThrow(() ->
+                new RuntimeException(String.format("User with  email %s not found!", email)));
+    }
     public Algorithm getAlgorithm(){
         return Algorithm.HMAC256(secretKey);
     }

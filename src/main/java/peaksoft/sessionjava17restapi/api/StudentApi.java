@@ -19,7 +19,7 @@ public class StudentApi {
     private final StudentService studentService;
 
     @PostMapping
-    @Secured({"ADMIN"})
+    @PreAuthorize("hasRole('ADMIN')")
     public SimpleResponse save(@RequestParam Long id , @RequestBody StudentRequest studentRequest){
        return studentService.saveWithGroup(id,studentRequest);
     }
@@ -35,6 +35,7 @@ public class StudentApi {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('STUDENT')")
     public String update (@PathVariable Long id, @RequestBody UpdateStudentRequest updateStudentRequest){
         return studentService.update(id, updateStudentRequest);
     }
